@@ -35,7 +35,7 @@ module.exports = function(req, res) {
     async.parallel([
         //Fetch total records for page
         function getTotalRecords(done) {
-            instance.model.count()
+            instance.model.count(instance.config.list.query || {})
                 .exec(function(err, count) {
                     if (err) return done(err);
                     total = count;
@@ -44,7 +44,7 @@ module.exports = function(req, res) {
         },
         // Loading list of records for page
         function loadRecords(done) {
-            var query = instance.model.find();
+            var query = instance.model.find(instance.config.list.query || {});
             if (req.sort) {
                 query.sort(req.sort.key + ' ' + req.sort.order);
             }
